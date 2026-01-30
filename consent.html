@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Waiting for Consent</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 450px;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+            text-align: center;
+        }
+
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        p {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .spinner {
+            margin: 25px auto;
+            width: 50px;
+            height: 50px;
+            border: 6px solid #ddd;
+            border-top: 6px solid #1e3c72;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .note {
+            font-size: 12px;
+            color: #777;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>⏳ Waiting for Photo Owner’s Consent...</h2>
+
+        <div class="spinner"></div>
+
+        <p>Please do not refresh this page.</p>
+
+        <p>
+            A deepfake attempt was detected and a consent request has been
+            successfully sent to the photo owner.
+        </p>
+
+        <div class="note">
+            This page will automatically update once consent is received.
+        </div>
+    </div>
+
+    <script>
+        setInterval(() => {
+            fetch('/check_consent')
+                .then(res => res.text())
+                .then(status => {
+                    if (status === "approved") {
+                        window.location.href = "/consent_result/approved";
+                    }
+                    if (status === "denied") {
+                        window.location.href = "/consent_result/denied";
+                    }
+                });
+        }, 2000);
+    </script>
+</body>
+</html>
+<!--<!DOCTYPE html>
+<html>
+<head>
+    <title>Waiting for Consent</title>
+
+
+    <h2>⏳ Waiting for Photo Owner’s Consent...</h2>
+<p>Please do not refresh this page.</p>
+<p>A deepfake attempt was detected and a consent request has been
+successfully sent to the photo owner.
+</p>
+
+<script>
+setInterval(() => {
+    fetch('/check_consent')
+        .then(res => res.text())
+        .then(status => {
+            if (status === "approved") {
+                window.location.href = "/consent_result/approved";
+            }
+            if (status === "denied") {
+                window.location.href = "/consent_result/denied";
+            }
+        });
+}, 2000);
+</script>
+</body>
+</html>
+-->
+
